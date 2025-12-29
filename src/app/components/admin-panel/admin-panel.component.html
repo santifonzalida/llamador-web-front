@@ -1,0 +1,43 @@
+<div class="cards-container">
+
+  @for (p of puestos; track p.id) {
+  <mat-card 
+    class="puesto-card card-action"
+    [class.disabled]="!p.free"
+    [attr.aria-disabled]="!p.free">
+    <mat-card-header>
+      <mat-card-title (click)="irAlPuestoAtencion(p)">
+        {{ p.name }}
+      </mat-card-title>
+      <mat-icon class="icono-delete" (click)="abrirDialogoEliminar(p)">delete</mat-icon>
+      @if (p.free) {
+        <mat-card-subtitle (click)="irAlPuestoAtencion(p)">
+          <span class="subtitle-row" [style.color]="'green'">
+            Disponible
+            <mat-icon>check_circle</mat-icon>
+          </span>
+        </mat-card-subtitle>
+      } @else {
+        <mat-card-subtitle>
+          <span class="subtitle-row" [style.color]="'red'">
+            Ocupado
+            <mat-icon>cancel</mat-icon>
+          </span>
+        </mat-card-subtitle>
+      }
+    </mat-card-header>
+    <mat-card-content (click)="irAlPuestoAtencion(p)">
+      <p>Click para ingresar</p>
+    </mat-card-content>
+  </mat-card>
+  }
+
+  <mat-card class="add-card" (click)="agregarPuesto()">
+    <mat-card-content>
+      <div class="add-content">
+        <mat-icon>add</mat-icon>
+        <span>Agregar puesto</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

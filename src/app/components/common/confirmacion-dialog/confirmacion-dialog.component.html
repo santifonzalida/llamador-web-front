@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Atención</h2>
+<mat-dialog-content>
+    Se eliminará el puesto de atención: {{data.name}}
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+    <button mat-button color="warn" [mat-dialog-close]="true">Eliminar</button>
+</mat-dialog-actions>

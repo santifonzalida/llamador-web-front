@@ -1,0 +1,27 @@
+@if (llamables && llamables.length > 0) {
+  <table class="call-table">
+    <thead>
+      <tr>
+        <th>PERSONA</th>
+        <th>PUESTO</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="person-name">
+          {{ llamables[0].persona }}
+        </td>
+
+        <td class="desk-name">
+          {{ llamables[0].idPuesto }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+} @else {
+  <mat-card class="call-container" >
+    <div class="call-title" (click)="iniciarPantalla()">
+      {{textoInicial}}
+    </div>
+  </mat-card>
+}

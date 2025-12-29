@@ -1,0 +1,42 @@
+.call-table {
+  width: 100%;
+  max-width: 1600px;
+  border-collapse: collapse;
+  text-align: center;
+  height: 200px; 
+  margin-top:200px
+}
+
+.call-table thead th {
+  font-size: 3.5rem;
+  font-weight: 600;
+  color: #555;
+  padding-bottom: 32px;
+}
+
+.call-table tbody td {
+  padding: 1px;
+}
+
+.person-name {
+  font-size: 6rem;
+  font-weight: 700;
+  color: #1976d2;
+}
+
+.desk-name {
+  font-size: 5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.call-title {
+  margin: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-size: 5rem;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  padding-left: 40%;
+}

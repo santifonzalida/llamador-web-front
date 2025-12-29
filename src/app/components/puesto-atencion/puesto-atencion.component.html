@@ -1,0 +1,48 @@
+<div class="">
+  <div class="header-row">
+    <span>Puesto de atención: {{ idPuestoAtencion }}</span>
+  
+    <a class="volver-link" (click)="volverAPrincipal()">
+      Volver
+    </a>
+  </div>
+    <mat-divider></mat-divider>
+</div>
+
+<div class="container">
+    <mat-card>
+      <mat-card-title [style.margin.px]="20">Próximo a llamar</mat-card-title>
+  
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Nombre completo</mat-label>
+        <input matInput [(ngModel)]="nombreIngresado" />
+      </mat-form-field>
+  
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="agregarNombre()"
+        [disabled]="!nombreIngresado"
+      >
+        Agregar
+      </button>
+    </mat-card>
+  
+  @if (nombrePersona) {
+    <mat-card>
+      <mat-card-title class="acciones" style="margin: 10px;">Está por llamar a: <strong style="margin-left: 5px;">{{ nombrePersona }}</strong>
+          <button mat-icon-button color="primary" (click)="llamar()" style="margin-left: 20px;">
+            <mat-icon>phone</mat-icon>
+          </button>
+      
+          <button mat-icon-button color="primary" (click)="editar()">
+            <mat-icon>edit</mat-icon>
+          </button>
+  
+          <button mat-icon-button color="warn" (click)="eliminar()">
+            <mat-icon>delete</mat-icon>
+          </button>
+      </mat-card-title>
+    </mat-card>
+  }
+  </div>

@@ -1,0 +1,31 @@
+.not-found-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100vh;
+    padding: 24px;
+  }
+  
+  .not-found-icon {
+    font-size: 80px;
+    margin-bottom: 16px;
+  }
+  
+  h1 {
+    font-size: 96px;
+    margin: 0;
+    font-weight: 700;
+  }
+  
+  h2 {
+    margin: 0 0 16px 0;
+    font-size: 24px;
+  }
+  
+  p {
+    max-width: 300px;
+    opacity: 0.7;
+    margin-bottom: 24px;
+  }
