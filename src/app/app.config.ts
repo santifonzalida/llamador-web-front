@@ -2,7 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 import { provideSocketIo, SocketIoConfig } from 'ngx-socket-io';
 import { routes } from './app.routes';
-import { environment } from './enviroment/enviroment';
+import { environment } from '../enviroment/enviroment';
 import { MatDialogModule } from '@angular/material/dialog';
 
 const config: SocketIoConfig = { 
