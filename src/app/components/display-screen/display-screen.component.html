@@ -2,19 +2,11 @@
   <div class="turnero-container">
     <mat-card class="main-card">
       <mat-card-header>
-        @if (llamableActual.idPuesto > 0) {
-          <mat-card-title>TURNO ACTUAL</mat-card-title>
-        } @else {
-          <mat-card-title> {{textoInicial}} </mat-card-title>
-        }
+        <mat-card-title class="main-card-title">USUARIO</mat-card-title>
       </mat-card-header>
       <mat-card-content class="big-display">
-        @if (llamableActual.persona.length > 0 && llamableActual.idPuesto > 0) {
-          <span class="persona-actual">{{ llamableActual.persona }}</span>
-          <span class="puesto-actual">DIRÍJASE A: {{ llamableActual.idPuesto }}</span>
-        } @else {
-          <span class="persona-actual" (click)="iniciarPantalla()">{{textoInicial}}</span>
-        }
+        <span class="persona-actual">{{ llamableActual.persona }}</span>
+        <span class="puesto-actual">DIRÍJASE A: {{ llamableActual.idPuesto }}</span>
       </mat-card-content>
     </mat-card>
 

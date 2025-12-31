@@ -28,16 +28,15 @@ export class DisplayScreenComponent implements OnInit, OnDestroy{
         private changeDetector: ChangeDetectorRef
     ) {
         this.audio = new Audio(this.audioUrl);
-     }
+    }
 
     ngOnInit(): void {
         this.llamableSubscription = this.llamadorService.llamable$.subscribe((llamables: any) => {
             if (!llamables || llamables.length == 0) {
                 return;
             }
-
-            this.llamableActual = llamables.at(-1);
-            this.historialLlamables = llamables.slice(1,4);
+            this.llamableActual = llamables[llamables.length -1];
+            this.historialLlamables = llamables;
             this.changeDetector.detectChanges();
             this.reproducirSonido();
         });
@@ -50,13 +49,12 @@ export class DisplayScreenComponent implements OnInit, OnDestroy{
     }
 
     reproducirSonido() {
-        this.audio.load(); // Carga el audio
-        this.audio.play(); // Reproduce el audio
-      }
+        this.audio.load();
+        this.audio.play(); 
+    }
     
-
-      iniciarPantalla(){
+    iniciarPantalla(){
         this.reproducirSonido();
         this.textoInicial = '';
-      }
+    }
 }

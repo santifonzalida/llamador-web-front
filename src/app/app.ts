@@ -28,15 +28,11 @@ export class App implements OnInit{
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
-      // Verifica si la URL contiene o es exactamente la ruta deseada
       this.isDisplayScreen = event.urlAfterRedirects === '/display-screen';
-      console.log(event);
     });
-
-
   }
+  
 } 
