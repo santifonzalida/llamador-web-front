@@ -16,6 +16,7 @@ export class DisplayScreenComponent implements OnInit, OnDestroy{
 
     private llamableSubscription: Subscription = new Subscription;
     llamables: Llamable[] = [];
+    //llamableActual: Llamable = undefined;
 
     textoInicial: string = 'Iniciar';
     audioUrl: string = 'assets/electronic-doorbell.mp3';
@@ -29,12 +30,11 @@ export class DisplayScreenComponent implements OnInit, OnDestroy{
 
     ngOnInit(): void {
         this.llamableSubscription = this.llamadorService.llamable$.subscribe((llamables: any) => {
-            this.llamables = [];
             if (!llamables || llamables.length == 0) {
                 return;
             }
     
-            this.llamables = [llamables.payload];
+            this.llamables = llamables;
             this.changeDetector.detectChanges();
             this.reproducirSonido();
         });

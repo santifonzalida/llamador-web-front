@@ -26,5 +26,5 @@ export class SocketService {
     liberatePuesto(id: number) { this.socket.emit('puesto:liberate', { id }); }
     
     // emitters llamable
-    llamarPersona(payload: Llamable) { this.socket.emit('llamable:call', { payload }); }
+    llamarPersona(payload: Llamable) { this.socket.emit('llamable:call', payload ); }
 }

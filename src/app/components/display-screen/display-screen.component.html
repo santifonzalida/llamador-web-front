@@ -2,19 +2,26 @@
   <table class="call-table">
     <thead>
       <tr>
-        <th>PERSONA</th>
+        <th>USUARIO</th>
         <th>PUESTO</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td class="person-name">
-          {{ llamables[0].persona }}
+        @for (item of llamables; track item.id) {
+          <td class="person-name">
+          {{ item.persona }}
         </td>
 
         <td class="desk-name">
-          {{ llamables[0].idPuesto }}
+          {{ item.idPuesto }}
         </td>
+        } @empty {
+          <td class="desk-name">
+          SIN RESULTADOS
+        </td>
+        }
+        
       </tr>
     </tbody>
   </table>
