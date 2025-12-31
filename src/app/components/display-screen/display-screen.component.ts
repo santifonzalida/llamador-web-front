@@ -2,21 +2,23 @@ import { Component, OnInit, ChangeDetectorRef, OnDestroy} from "@angular/core";
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { MatCardModule } from "@angular/material/card";
+import { MatIcon } from "@angular/material/icon";
 import { Llamable, LlamadorService } from "../../services/llamador.service";
 
 @Component({
     selector: 'display-screen',
     templateUrl: './display-screen.component.html',
     styleUrl: './display-screen.component.scss',
-    imports: [MatCardModule, CommonModule],
+    imports: [MatCardModule, CommonModule, MatIcon],
     providers: [LlamadorService]
 })
 
 export class DisplayScreenComponent implements OnInit, OnDestroy{
 
     private llamableSubscription: Subscription = new Subscription;
-    llamables: Llamable[] = [];
-    //llamableActual: Llamable = undefined;
+
+    historialLlamables: Llamable[] = [];
+    llamableActual: Llamable = {id: 0, idPuesto: 0, persona: '', timestamp: Date.now()};
 
     textoInicial: string = 'Iniciar';
     audioUrl: string = 'assets/electronic-doorbell.mp3';
@@ -33,8 +35,9 @@ export class DisplayScreenComponent implements OnInit, OnDestroy{
             if (!llamables || llamables.length == 0) {
                 return;
             }
-    
-            this.llamables = llamables;
+
+            this.llamableActual = llamables.at(-1);
+            this.historialLlamables = llamables.slice(1,4);
             this.changeDetector.detectChanges();
             this.reproducirSonido();
         });

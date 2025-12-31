@@ -1,34 +1,57 @@
-@if (llamables && llamables.length > 0) {
-  <table class="call-table">
-    <thead>
-      <tr>
-        <th>USUARIO</th>
-        <th>PUESTO</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        @for (item of llamables; track item.id) {
-          <td class="person-name">
-          {{ item.persona }}
-        </td>
-
-        <td class="desk-name">
-          {{ item.idPuesto }}
-        </td>
-        } @empty {
-          <td class="desk-name">
-          SIN RESULTADOS
-        </td>
+@if (llamableActual && llamableActual.idPuesto > 0) {
+  <div class="turnero-container">
+    <mat-card class="main-card">
+      <mat-card-header>
+        @if (llamableActual.idPuesto > 0) {
+          <mat-card-title>TURNO ACTUAL</mat-card-title>
+        } @else {
+          <mat-card-title> {{textoInicial}} </mat-card-title>
         }
-        
-      </tr>
-    </tbody>
-  </table>
-} @else {
-  <mat-card class="call-container" >
-    <div class="call-title" (click)="iniciarPantalla()">
-      {{textoInicial}}
+      </mat-card-header>
+      <mat-card-content class="big-display">
+        @if (llamableActual.persona.length > 0 && llamableActual.idPuesto > 0) {
+          <span class="persona-actual">{{ llamableActual.persona }}</span>
+          <span class="puesto-actual">DIRÍJASE A: {{ llamableActual.idPuesto }}</span>
+        } @else {
+          <span class="persona-actual" (click)="iniciarPantalla()">{{textoInicial}}</span>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <div class="history-sidebar">
+      <h3>ÚLTIMOS LLAMADOS</h3>
+      @for (item of historialLlamables; track item.timestamp) {
+        <mat-card class="history-card">
+          <div class="history-content">
+            <span class="h-numero">{{ item.persona }}</span>
+            <mat-icon>arrow_forward</mat-icon>
+            <span class="h-modulo">{{ item.idPuesto }}</span>
+          </div>
+        </mat-card>
+      }
     </div>
-  </mat-card>
+  </div>
+} @else {
+  <div class="turnero-container" (click)="iniciarPantalla()">
+    <mat-card class="main-card">
+      <mat-card-header>
+          <mat-card-title> {{textoInicial}} </mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="big-display">
+        @if (textoInicial.length == 0) {
+          <span class="puesto-actual">Esperando turnos</span>
+      } 
+      </mat-card-content>
+    </mat-card>
+    <div class="history-sidebar">
+      <h3>ÚLTIMOS LLAMADOS</h3>
+        <mat-card class="history-card">
+          <div class="history-content">
+            <span class="h-numero">-</span>
+            <mat-icon>arrow_forward</mat-icon>
+            <span class="h-modulo">-</span>
+          </div>
+        </mat-card>
+    </div>
+  </div>
 }

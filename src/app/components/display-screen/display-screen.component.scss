@@ -1,36 +1,71 @@
-.call-table {
-  width: 100%;
-  max-width: 1600px;
-  border-collapse: collapse;
-  text-align: center;
-  height: 200px; 
-  margin-top:200px
+.turnero-container {
+  display: flex;
+  height: 100vh;
+  background-color: #1a1a1a; // Fondo oscuro para evitar fatiga visual
+  padding: 20px;
+  gap: 20px;
+  box-sizing: border-box;
+
+  .main-card {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #62b0e4;
+    color: #000;
+    
+    .big-display {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      
+      .persona-actual {
+        font-size: 10rem;
+        font-weight: 900;
+        line-height: 1;
+      }
+      
+      .puesto-actual {
+        font-size: 5rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        margin-top: 20px;
+      }
+    }
+  }
+
+  .history-sidebar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    h3 {
+      color: white;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+
+    .history-card {
+      background-color: #333;
+      color: white;
+      padding: 15px;
+
+      .history-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 2rem;
+        
+        .h-numero { font-weight: bold; color: #ffd740; }
+        .h-modulo { font-size: 1.5rem; }
+      }
+    }
+  }
 }
 
-.call-table thead th {
-  font-size: 3.5rem;
-  font-weight: 600;
-  color: #555;
-  padding-bottom: 32px;
-}
-
-.call-table tbody td {
-  padding: 1px;
-}
-
-.person-name {
-  font-size: 6rem;
-  font-weight: 700;
-  color: #1976d2;
-}
-
-.desk-name {
-  font-size: 5rem;
-  font-weight: 600;
-  color: #333;
-}
-
-.call-title {
+.call-title-init {
   margin: 20px;
   padding-top: 20px;
   padding-bottom: 20px;
