@@ -1,3 +1,4 @@
+@if (!isDisplayScreen) {
 <mat-sidenav-container class="main-container">
     <mat-sidenav #sidenav mode="side" class="sidenav rounded-sidenav">
         <mat-nav-list class="rounded-nav-list">  
@@ -20,3 +21,6 @@
         </div>
     </mat-sidenav-content>
 </mat-sidenav-container>
+} @else {
+    <router-outlet />  
+}
