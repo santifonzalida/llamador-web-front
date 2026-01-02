@@ -14,11 +14,13 @@ import { Llamable, LlamadorService } from "../../services/llamador.service";
 })
 
 export class DisplayScreenComponent implements OnInit, OnDestroy{
-
+    
+    TIEMPO_MINIMO = 6000;
+    procesando: boolean = false;
     private llamableSubscription: Subscription = new Subscription;
     historialLlamables: Llamable[] = [];
     colaDeEspera: Llamable[] = [];
-    llamableActual: Llamable = {id: 0, idPuesto: 0, persona: '', timestamp: Date.now()};
+    llamableActual: any;
     textoInicial: string = 'Iniciar';
     audioUrl: string = 'assets/electronic-doorbell.mp3';
     audio: HTMLAudioElement; 
@@ -35,13 +37,10 @@ export class DisplayScreenComponent implements OnInit, OnDestroy{
             if (!llamables || llamables.length == 0) {
                 return;
             }
-            this.llamarPorPantalla(llamables);
+            this.colaDeEspera.push(llamables[0]);
 
-            if (this.colaDeEspera.length > 0) {
-                setTimeout(() => {
-                    this.llamarPorPantalla(llamables);
-                    this.colaDeEspera = [];
-                }, 6000 - (this.colaDeEspera[0].timestamp - this.llamableActual.timestamp));
+            if (!this.procesando) {
+                this.llamarPorPantalla();
             }
         });
     }
@@ -52,17 +51,31 @@ export class DisplayScreenComponent implements OnInit, OnDestroy{
         }
     }
 
-    llamarPorPantalla(llamables: Llamable[]){
-        if (llamables[0].timestamp - this.llamableActual.timestamp > 6000) {
-            this.llamableActual = llamables[0];
-            this.historialLlamables = llamables;
-            this.changeDetector.detectChanges();
-            this.reproducirSonido();
-        } else {
-            this.colaDeEspera.push(llamables[0]);
+    async llamarPorPantalla(){
+        if (this.colaDeEspera.length == 0) {
+            this.procesando = false;
+            return;
         }
+
+        this.procesando = true;
+        this.llamableActual = this.colaDeEspera.shift();
+        
+        if (this.llamableActual){
+            this.historialLlamables.push(this.llamableActual);
+            
+            this.historialLlamables.sort((a,b) => b.timestamp - a.timestamp);
+            this.changeDetector.detectChanges();
+        }
+        
+        this.reproducirSonido();
+        await this.nuevasEspera(this.TIEMPO_MINIMO);
+        this.llamarPorPantalla();
     }
 
+
+    nuevasEspera(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    } 
     reproducirSonido() {
         this.audio.load();
         this.audio.play(); 

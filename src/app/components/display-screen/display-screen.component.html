@@ -12,13 +12,18 @@
 
     <div class="history-sidebar">
       <h3>ÚLTIMOS LLAMADOS</h3>
-      @for (item of historialLlamables | slice:0:6; track item.timestamp; let primero = $first) {
+        <div class="history-header">
+          <span class="header-col">Usuario</span>
+          <span class="header-col-puesto">Puesto</span>
+        </div>
+      @for (item of historialLlamables | slice:0:5; track item.timestamp; let primero = $first) {
         @if (!primero){
           <mat-card class="history-card">
             <div class="history-content">
               <span class="h-numero">{{ item.persona }}</span>
-              <mat-icon>arrow_forward</mat-icon>
-              <span class="h-modulo">{{ item.idPuesto }}</span>
+              <span class="h-modulo">
+                <mat-icon>arrow_forward</mat-icon>
+                {{ item.idPuesto }}</span>
             </div>
           </mat-card>
         }
