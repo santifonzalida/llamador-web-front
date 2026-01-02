@@ -1,7 +1,7 @@
 .turnero-container {
   display: flex;
   height: 100vh;
-  background-color: #e7e7e7; // Fondo oscuro para evitar fatiga visual
+  background-color: #e7e7e7; 
   padding: 20px;
   gap: 20px;
   box-sizing: border-box;
@@ -17,6 +17,8 @@
     
     .main-card-title {
       color: black;
+      font-size: 3rem;
+
     }
 
     .big-display {
@@ -53,7 +55,7 @@
     }
 
     .history-card {
-      background-color: #333;
+      background-color: #9c9c9c;
       color: white;
       padding: 15px;
 
@@ -63,7 +65,7 @@
         align-items: center;
         font-size: 2rem;
         
-        .h-numero { font-weight: bold; color: #ffd740; }
+        .h-numero { font-weight: bold; color: #011c27; }
         .h-modulo { font-size: 1.5rem; }
       }
     }

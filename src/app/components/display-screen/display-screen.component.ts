@@ -16,13 +16,13 @@ import { Llamable, LlamadorService } from "../../services/llamador.service";
 export class DisplayScreenComponent implements OnInit, OnDestroy{
 
     private llamableSubscription: Subscription = new Subscription;
-
     historialLlamables: Llamable[] = [];
+    colaDeEspera: Llamable[] = [];
     llamableActual: Llamable = {id: 0, idPuesto: 0, persona: '', timestamp: Date.now()};
-
     textoInicial: string = 'Iniciar';
     audioUrl: string = 'assets/electronic-doorbell.mp3';
     audio: HTMLAudioElement; 
+
     constructor(
         private llamadorService: LlamadorService,
         private changeDetector: ChangeDetectorRef
@@ -31,20 +31,35 @@ export class DisplayScreenComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit(): void {
-        this.llamableSubscription = this.llamadorService.llamable$.subscribe((llamables: any) => {
+        this.llamableSubscription = this.llamadorService.llamable$.subscribe((llamables: Llamable[]) => {
             if (!llamables || llamables.length == 0) {
                 return;
             }
-            this.llamableActual = llamables[llamables.length -1];
-            this.historialLlamables = llamables;
-            this.changeDetector.detectChanges();
-            this.reproducirSonido();
+            this.llamarPorPantalla(llamables);
+
+            if (this.colaDeEspera.length > 0) {
+                setTimeout(() => {
+                    this.llamarPorPantalla(llamables);
+                    this.colaDeEspera = [];
+                }, 6000 - (this.colaDeEspera[0].timestamp - this.llamableActual.timestamp));
+            }
         });
     }
 
     ngOnDestroy(): void {
         if (this.llamableSubscription) {
             this.llamableSubscription.unsubscribe(); 
+        }
+    }
+
+    llamarPorPantalla(llamables: Llamable[]){
+        if (llamables[0].timestamp - this.llamableActual.timestamp > 6000) {
+            this.llamableActual = llamables[0];
+            this.historialLlamables = llamables;
+            this.changeDetector.detectChanges();
+            this.reproducirSonido();
+        } else {
+            this.colaDeEspera.push(llamables[0]);
         }
     }
 
