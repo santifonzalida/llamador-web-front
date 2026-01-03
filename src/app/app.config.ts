@@ -4,6 +4,8 @@ import { provideSocketIo, SocketIoConfig } from 'ngx-socket-io';
 import { routes } from './app.routes';
 import { environment } from '../environment/environment';
 import { MatDialogModule } from '@angular/material/dialog';
+import { provideAnimations } from '@angular/platform-browser/animations';
+
 
 const config: SocketIoConfig = { 
   url: `${environment.apiUrl}`,
@@ -17,6 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideSocketIo(config),
+    provideAnimations(),
     MatDialogModule,
   ],
 };

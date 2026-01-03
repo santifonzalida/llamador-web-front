@@ -2,15 +2,29 @@ import { Component, OnInit, ChangeDetectorRef, OnDestroy} from "@angular/core";
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { MatCardModule } from "@angular/material/card";
-import { MatIcon } from "@angular/material/icon";
 import { Llamable, LlamadorService } from "../../services/llamador.service";
+import { MatTableModule } from '@angular/material/table';
+import { trigger, transition, style, animate } from '@angular/animations';
+
+
 
 @Component({
     selector: 'display-screen',
+    standalone: true,
     templateUrl: './display-screen.component.html',
     styleUrl: './display-screen.component.scss',
-    imports: [MatCardModule, CommonModule, MatIcon],
-    providers: [LlamadorService]
+    imports: [MatCardModule, CommonModule, MatTableModule],
+    providers: [LlamadorService],
+    animations: [
+        trigger('llamadoAnimado', [
+          transition(':enter', [
+            style({ transform: 'scale(1.1)', backgroundColor: '#c8e6c9' }),
+            animate('700ms ease-out',
+              style({ transform: 'scale(1)', backgroundColor: '#ffffff' })
+            )
+          ])
+        ])
+      ]
 })
 
 export class DisplayScreenComponent implements OnInit, OnDestroy{
@@ -24,7 +38,7 @@ export class DisplayScreenComponent implements OnInit, OnDestroy{
     textoInicial: string = 'Iniciar';
     audioUrl: string = 'assets/electronic-doorbell.mp3';
     audio: HTMLAudioElement; 
-
+    
     constructor(
         private llamadorService: LlamadorService,
         private changeDetector: ChangeDetectorRef

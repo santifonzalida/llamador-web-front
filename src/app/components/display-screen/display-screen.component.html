@@ -1,54 +1,69 @@
 @if (llamableActual && llamableActual.idPuesto > 0) {
-  <div class="turnero-container">
-    <mat-card class="main-card">
-      <mat-card-header>
-        <mat-card-title class="main-card-title">USUARIO</mat-card-title>
-      </mat-card-header>
-      <mat-card-content class="big-display">
-        <span class="persona-actual">{{ llamableActual.persona }}</span>
-        <span class="puesto-actual">DIRÍJASE A: {{ llamableActual.idPuesto }}</span>
-      </mat-card-content>
-    </mat-card>
 
-    <div class="history-sidebar">
-      <h3>ÚLTIMOS LLAMADOS</h3>
-        <div class="history-header">
-          <span class="header-col">Usuario</span>
-          <span class="header-col-puesto">Puesto</span>
-        </div>
-      @for (item of historialLlamables | slice:0:5; track item.timestamp; let primero = $first) {
-        @if (!primero){
-          <mat-card class="history-card">
-            <div class="history-content">
-              <span class="h-numero">{{ item.persona }}</span>
-              <span class="h-modulo">
-                <mat-icon>arrow_forward</mat-icon>
-                {{ item.idPuesto }}</span>
-            </div>
-          </mat-card>
-        }
-      }
-    </div>
+  <div class="turnero-container">
+
+    <!-- LLAMADO ACTUAL -->
+    <section class="actual-section">
+
+      <table mat-table
+             [dataSource]="[llamableActual]"
+             class="mat-elevation-z8 tabla-actual"
+             @llamadoAnimado>
+
+        <!-- Usuario -->
+        <ng-container matColumnDef="usuario">
+          <th mat-header-cell *matHeaderCellDef>Usuario</th>
+          <td mat-cell *matCellDef="let row" class="usuario-actual">
+            {{ row.persona }}
+          </td>
+        </ng-container>
+
+        <!-- Puesto -->
+        <ng-container matColumnDef="puesto">
+          <th mat-header-cell *matHeaderCellDef>Puesto</th>
+          <td mat-cell *matCellDef="let row" class="puesto-actual">
+            {{ row.idPuesto }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['usuario','puesto']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['usuario','puesto']"></tr>
+
+      </table>
+    </section>
+
+    <!-- HISTORIAL -->
+    <section class="historial-section">
+      <h2 class="section-title">ÚLTIMOS LLAMADOS</h2>
+
+      <table mat-table
+             [dataSource]="historialLlamables | slice:0:5"
+             class="mat-elevation-z2 tabla-historial">
+
+        <ng-container matColumnDef="usuario">
+          <th mat-header-cell *matHeaderCellDef>Usuario</th>
+          <td mat-cell *matCellDef="let row">{{ row.persona }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="puesto">
+          <th mat-header-cell *matHeaderCellDef>Puesto</th>
+          <td mat-cell *matCellDef="let row">{{ row.idPuesto }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['usuario','puesto']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['usuario','puesto']"></tr>
+
+      </table>
+    </section>
+
   </div>
+
 } @else {
-  <div class="turnero-container" (click)="iniciarPantalla()">
-    <mat-card class="main-card">
-      <mat-card-header>
-          <mat-card-title> {{textoInicial}} </mat-card-title>
-      </mat-card-header>
-      <mat-card-content class="big-display">
-          <span class="puesto-actual">Esperando turnos</span>
-      </mat-card-content>
-    </mat-card>
-    <div class="history-sidebar">
-      <h3>ÚLTIMOS LLAMADOS</h3>
-        <mat-card class="history-card">
-          <div class="history-content">
-            <span class="h-numero">-</span>
-            <mat-icon>arrow_forward</mat-icon>
-            <span class="h-modulo">-</span>
-          </div>
-        </mat-card>
-    </div>
+
+  <!-- PANTALLA INICIAL -->
+  <div class="turnero-container init" (click)="iniciarPantalla()">
+    <h1 class="call-title-init">{{ textoInicial }}</h1>
+    <span class="esperando">Esperando turnos…</span>
   </div>
+
 }

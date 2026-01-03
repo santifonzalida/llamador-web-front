@@ -9,7 +9,6 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
-
 @Component({
   selector: 'app-root',
   imports: [CommonModule, RouterOutlet, MatButtonModule, MatCardModule, MatSidenavModule, MatIconModule, MatToolbarModule, MatListModule],
