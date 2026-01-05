@@ -13,6 +13,7 @@ interface Puesto {
     id: number;
     name: string;
     free: boolean;
+    descripcion: string;
     timestamp: number;
 }
 
@@ -31,10 +32,8 @@ interface Puesto {
 
 
 export class AdminPanelComponent implements OnInit, OnDestroy {
-
     
     private puestosSubscription: Subscription = new Subscription;
-
     puestos: Puesto[] = [];
 
     constructor(
@@ -70,7 +69,9 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         if (!puesto.free){
             return;
         }
-        this.router.navigate(['/puesto', puesto.id]);
+        this.router.navigate(['/puesto', puesto.id],{
+            queryParams: { name: puesto.name }
+        });
     }
 
     cancelarEliminarPuesto(){
@@ -84,7 +85,12 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     abrirDialogoEliminar(p: Puesto): void {
         const dialogRef = this.dialog.open(DialogContentComponent, {
             width: '300px',
-            data: { name: p.name }
+            data: { 
+                title: 'Atención', 
+                message: `Se eliminará el puesto de atención: ${p.descripcion}`,
+                txtBtnSuccess: 'Eliminar',
+                txtBtnCancel: 'Cancelar'    
+            }
         });
     
         dialogRef.afterClosed().subscribe(result => {

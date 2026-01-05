@@ -1,4 +1,4 @@
-@if (llamableActual && llamableActual.idPuesto > 0) {
+@if (llamableActual && llamableActual.id > 0) {
 
   <div class="turnero-container">
 
@@ -8,21 +8,21 @@
       <table mat-table
              [dataSource]="[llamableActual]"
              class="mat-elevation-z8 tabla-actual"
-             @llamadoAnimado>
+             >
 
         <!-- Usuario -->
         <ng-container matColumnDef="usuario">
-          <th mat-header-cell *matHeaderCellDef>Usuario</th>
-          <td mat-cell *matCellDef="let row" class="usuario-actual">
+          <th mat-header-cell *matHeaderCellDef>USUARIO</th>
+          <td mat-cell *matCellDef="let row" class="usuario-actual" @llamadoAnimado>
             {{ row.persona }}
           </td>
         </ng-container>
 
         <!-- Puesto -->
         <ng-container matColumnDef="puesto">
-          <th mat-header-cell *matHeaderCellDef>Puesto</th>
-          <td mat-cell *matCellDef="let row" class="puesto-actual">
-            {{ row.idPuesto }}
+          <th mat-header-cell *matHeaderCellDef>PUESTO</th>
+          <td mat-cell *matCellDef="let row" class="puesto-actual" @llamadoAnimado>
+            {{ row.nombrePuesto }}
           </td>
         </ng-container>
 
@@ -37,17 +37,17 @@
       <h2 class="section-title">ÚLTIMOS LLAMADOS</h2>
 
       <table mat-table
-             [dataSource]="historialLlamables | slice:0:5"
+             [dataSource]="historialLlamables | slice:1:6"
              class="mat-elevation-z2 tabla-historial">
 
         <ng-container matColumnDef="usuario">
-          <th mat-header-cell *matHeaderCellDef>Usuario</th>
+          <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let row">{{ row.persona }}</td>
         </ng-container>
 
         <ng-container matColumnDef="puesto">
-          <th mat-header-cell *matHeaderCellDef>Puesto</th>
-          <td mat-cell *matCellDef="let row">{{ row.idPuesto }}</td>
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">{{ row.nombrePuesto }}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="['usuario','puesto']"></tr>

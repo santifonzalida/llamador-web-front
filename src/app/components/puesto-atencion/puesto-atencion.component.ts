@@ -9,15 +9,10 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from "@angular/material/button";
+import { MatDialog } from '@angular/material/dialog';
 import { PuestosService } from '../../services/puestos.service';
 import { Llamable, LlamadorService } from "../../services/llamador.service";
-
-interface Person {
-  nombreCompleto: string;
-  id: number;
-  timestamp: number;
-  fueLlamado: boolean;
-}
+import { DialogContentComponent } from "../common/confirmacion-dialog/confirmacion-dialog.component";
 
 @Component({
   selector: 'puesto-atencion',
@@ -30,17 +25,19 @@ interface Person {
 export class PuestoAtencionComponent implements OnInit, OnDestroy {
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
-  public cola: Person[] = [];
 
   private puestoSubscription: Subscription = new Subscription;
 
   idPuestoAtencion: number = 0;
   nombreIngresado = '';
   nombrePersona: string = '';
+  namePuestoAtencion: string = '';
+  payload: Llamable = {id: 0, nombrePuesto: '', persona: '', timestamp: Date.now(), fueLlamado: false};
 
   constructor(
     private puestosService: PuestosService,
-    private llamadorService: LlamadorService
+    private llamadorService: LlamadorService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -51,6 +48,13 @@ export class PuestoAtencionComponent implements OnInit, OnDestroy {
       this.idPuestoAtencion = Number(params['id']);
       this.puestosService.takePuesto(this.idPuestoAtencion);
     });
+
+    this.activatedRoute.queryParams.subscribe(p => {
+      if(!p) {
+        return;
+      }
+      this.namePuestoAtencion = p['name'];
+    })
   }
 
   ngOnDestroy() {
@@ -60,18 +64,24 @@ export class PuestoAtencionComponent implements OnInit, OnDestroy {
   }
 
   agregarNombre() {
+    this.payload = {id: 0, nombrePuesto: '', persona: '', timestamp: Date.now(), fueLlamado: false};
     this.nombrePersona = this.nombreIngresado;
     this.nombreIngresado = '';
   }
 
   llamar() {
-    const payload: Llamable = {
-      id: 0,
-      idPuesto: this.idPuestoAtencion,
-      persona: this.nombrePersona,
-      timestamp: Date.now()
+    if(this.payload.fueLlamado) {
+      this.abrirModalRellamado();
+    } else {
+      this.payload = {
+        id: 0,
+        nombrePuesto: this.namePuestoAtencion,
+        persona: this.nombrePersona,
+        timestamp: Date.now(),
+        fueLlamado: true
+      }
+    this.llamadorService.llamarPersona(this.payload);
     }
-    this.llamadorService.llamarPersona(payload);
   }
 
   editar() {
@@ -88,6 +98,28 @@ export class PuestoAtencionComponent implements OnInit, OnDestroy {
   volverAPrincipal() {
     this.puestosService.liberatePuesto(this.idPuestoAtencion);
     this.router.navigate(['/admin-panel']);
+  }
+
+  abrirModalRellamado(): void {
+    const dialogRef = this.dialog.open(DialogContentComponent, {
+        width: '300px',
+        data: { 
+          title: 'Atención', 
+          message: `Se llamará nuevamente a: ${this.payload.persona}`,
+          txtBtnSuccess: 'Aceptar',
+          txtBtnCancel: 'Cancelar'    
+        }
+    });
+      
+    dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+            this.volverALlamar();
+        }
+    });
+  }
+
+  volverALlamar(){
+    this.llamadorService.llamarPersona(this.payload);
   }
 
 }

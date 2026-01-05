@@ -7,7 +7,7 @@
     [attr.aria-disabled]="!p.free">
     <mat-card-header>
       <mat-card-title (click)="irAlPuestoAtencion(p)">
-        {{ p.name }}
+        {{ p.descripcion }}
       </mat-card-title>
       <mat-icon class="icono-delete" (click)="abrirDialogoEliminar(p)">delete</mat-icon>
       @if (p.free) {

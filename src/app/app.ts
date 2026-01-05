@@ -1,6 +1,6 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, Router, NavigationEnd  } from '@angular/router';
+import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { MatCardModule } from '@angular/material/card';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -18,6 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
 export class App implements OnInit{
 
   isDisplayScreen: boolean = false;
+
   actions = [
     'Acción 1',
   ];
@@ -33,5 +34,5 @@ export class App implements OnInit{
       this.isDisplayScreen = event.urlAfterRedirects === '/display-screen';
     });
   }
-  
+
 } 

@@ -6,7 +6,8 @@ export interface Llamable {
     id: number;
     persona: string;
     timestamp: number;
-    idPuesto: number;
+    nombrePuesto: string;
+    fueLlamado: boolean;
 }
 
 @Injectable({ providedIn: 'root' })

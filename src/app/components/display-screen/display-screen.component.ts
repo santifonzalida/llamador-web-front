@@ -7,7 +7,6 @@ import { MatTableModule } from '@angular/material/table';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 
-
 @Component({
     selector: 'display-screen',
     standalone: true,
@@ -18,17 +17,15 @@ import { trigger, transition, style, animate } from '@angular/animations';
     animations: [
         trigger('llamadoAnimado', [
           transition(':enter', [
-            style({ transform: 'scale(1.1)', backgroundColor: '#c8e6c9' }),
-            animate('700ms ease-out',
-              style({ transform: 'scale(1)', backgroundColor: '#ffffff' })
+            style({ transform: 'scale(1.1)', backgroundColor: '#ffffff' }),
+            animate('1300ms ease-out',
+              style({ transform: 'scale(1)', backgroundColor: '#cddef5ff' })
             )
           ])
-        ])
-      ]
+    ])]
 })
 
 export class DisplayScreenComponent implements OnInit, OnDestroy{
-    
     TIEMPO_MINIMO = 6000;
     procesando: boolean = false;
     private llamableSubscription: Subscription = new Subscription;
@@ -38,6 +35,7 @@ export class DisplayScreenComponent implements OnInit, OnDestroy{
     textoInicial: string = 'Iniciar';
     audioUrl: string = 'assets/electronic-doorbell.mp3';
     audio: HTMLAudioElement; 
+    mostrarTablaLlamadoActual = false;
     
     constructor(
         private llamadorService: LlamadorService,
@@ -54,6 +52,7 @@ export class DisplayScreenComponent implements OnInit, OnDestroy{
             this.colaDeEspera.push(llamables[0]);
 
             if (!this.procesando) {
+                this.mostrarTablaLlamadoActual = false;
                 this.llamarPorPantalla();
             }
         });
@@ -70,6 +69,8 @@ export class DisplayScreenComponent implements OnInit, OnDestroy{
             this.procesando = false;
             return;
         }
+
+        this.mostrarTablaLlamadoActual = true;
 
         this.procesando = true;
         this.llamableActual = this.colaDeEspera.shift();

@@ -1,16 +1,21 @@
 .turnero-container {
   height: 100vh;
   padding: 32px;
-  background-color: #e7e7e7;
+  
   display: grid;
   grid-template-rows: auto 1fr;
   gap: 40px;
+
+  background-image: url('../../../assets/fondo_display.jpg'); /* 1. Ruta a imagen */
+  background-size: cover; /* 2. Cubre todo el elemento */
+  background-attachment: fixed; 
 }
 
 /* ===== LLAMADO ACTUAL ===== */
 .tabla-actual {
   width: 100%;
   height: 170px;
+  opacity: 0.75;
 
   .mat-header-row {
     height: 80px;
@@ -23,7 +28,8 @@
   th {
     font-size: 2rem;
     text-align: center;
-    color:#666;
+    background-color: #1565c0;
+    color:white;
   }
 
   td {
@@ -35,24 +41,29 @@
 
 .usuario-actual {
   font-size: 6rem;
-  color: #1565c0;
+  color: #000000;
 }
 
 .puesto-actual {
   font-size: 6rem;
-  color: #1565c0;
+  color: #000000;
 }
 
 /* ===== HISTORIAL ===== */
 .tabla-historial {
   width: 100%;
-
+  opacity: 0.75;
   th {
     font-size: 1.5rem;
+    text-align: center;
+    background-color: #1565c0;
+    color:white;
   }
 
   td {
-    font-size: 2rem;
+    font-size: 3rem;
+    text-align: center;
+    padding-right: 29px;
   }
 }
 
