@@ -1,14 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { SocketService } from './socket.service';
-
-export interface Puesto {
-    id: number;
-    name: string;
-    free: boolean;
-    timestamp: number;
-    idClient: string;
-  }
+import { Puesto } from '../models/puesto.model';
 
 @Injectable({ providedIn: 'root' })
 export class PuestosService {
