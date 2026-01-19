@@ -6,7 +6,7 @@ import { Puesto } from '../models/puesto.model';
 @Injectable({
   providedIn: 'root'
 })
-export class PuestoSocketService {
+export class DisplayScreenSocketService {
 
   private socket!: Socket;
 

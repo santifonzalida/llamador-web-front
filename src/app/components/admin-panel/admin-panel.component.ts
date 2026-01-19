@@ -8,14 +8,7 @@ import { DialogContentComponent } from "../common/confirmacion-dialog/confirmaci
 import { PuestosService } from '../../services/puestos.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-
-interface Puesto {
-    id: number;
-    name: string;
-    free: boolean;
-    descripcion: string;
-    timestamp: number;
-}
+import { Puesto } from "../../models/puesto.model";
 
 @Component({
     selector: 'admin-panel',

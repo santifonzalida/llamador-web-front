@@ -11,7 +11,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from '@angular/material/dialog';
 import { PuestosService } from '../../services/puestos.service';
-import { Llamable, LlamadorService } from "../../services/llamador.service";
+import { LlamadorService } from "../../services/llamador.service";
+import { Llamable } from "../../models/llamable.model";
 import { DialogContentComponent } from "../common/confirmacion-dialog/confirmacion-dialog.component";
 
 @Component({

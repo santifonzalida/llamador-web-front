@@ -1,14 +1,7 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from 'rxjs';
 import { SocketService } from './socket.service';
-
-export interface Llamable {
-    id: number;
-    persona: string;
-    timestamp: number;
-    nombrePuesto: string;
-    fueLlamado: boolean;
-}
+import { Llamable } from '../models/llamable.model'; 
 
 @Injectable({ providedIn: 'root' })
 export class LlamadorService {

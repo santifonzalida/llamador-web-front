@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { Llamable } from './llamador.service';
+import { Llamable } from '../models/llamable.model';
 
 
 @Injectable({ providedIn: 'root' })

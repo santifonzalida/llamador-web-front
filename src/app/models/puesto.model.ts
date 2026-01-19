@@ -4,4 +4,5 @@ export interface Puesto {
     free: boolean;
     timestamp: number;
     idClient: string;
+    descripcion: string;
 }
