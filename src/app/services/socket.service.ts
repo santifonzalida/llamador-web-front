@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { Llamable } from './llamador.service';
+import { Llamable } from '../models/llamable.model';
 
 
 @Injectable({ providedIn: 'root' })
 export class SocketService {
     constructor(private socket: Socket) { }
 
-    // events puesto
+    // eventos puesto
     onPuestosUpdate() { return this.socket.fromEvent('puesto:update'); }
     onPuestoAdded() { return this.socket.fromEvent('puesto:added'); }
     onPuestoTaked() { return this.socket.fromEvent('puesto:taked'); }

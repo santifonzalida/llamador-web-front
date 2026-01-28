@@ -2,7 +2,8 @@ import { Component, OnInit, ChangeDetectorRef, OnDestroy} from "@angular/core";
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { MatCardModule } from "@angular/material/card";
-import { Llamable, LlamadorService } from "../../services/llamador.service";
+import { LlamadorService } from "../../services/llamador.service";
+import { Llamable } from "../../models/llamable.model";
 import { MatTableModule } from '@angular/material/table';
 import { trigger, transition, style, animate } from '@angular/animations';
 
@@ -13,7 +14,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
     templateUrl: './display-screen.component.html',
     styleUrl: './display-screen.component.scss',
     imports: [MatCardModule, CommonModule, MatTableModule],
-    providers: [LlamadorService],
+    providers: [],
     animations: [
         trigger('llamadoAnimado', [
           transition(':enter', [
@@ -26,15 +27,15 @@ import { trigger, transition, style, animate } from '@angular/animations';
 })
 
 export class DisplayScreenComponent implements OnInit, OnDestroy{
+    private llamableSubscription: Subscription = new Subscription;
+    audioUrl: string = 'assets/electronic-doorbell.mp3';
+    audio: HTMLAudioElement; 
     TIEMPO_MINIMO = 6000;
     procesando: boolean = false;
-    private llamableSubscription: Subscription = new Subscription;
     historialLlamables: Llamable[] = [];
     colaDeEspera: Llamable[] = [];
     llamableActual: any;
     textoInicial: string = 'Iniciar';
-    audioUrl: string = 'assets/electronic-doorbell.mp3';
-    audio: HTMLAudioElement; 
     mostrarTablaLlamadoActual = false;
     
     constructor(
@@ -87,10 +88,10 @@ export class DisplayScreenComponent implements OnInit, OnDestroy{
         this.llamarPorPantalla();
     }
 
-
     nuevasEspera(ms: number) {
         return new Promise(resolve => setTimeout(resolve, ms));
     } 
+
     reproducirSonido() {
         this.audio.load();
         this.audio.play(); 
