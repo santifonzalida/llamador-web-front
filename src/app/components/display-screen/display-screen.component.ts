@@ -14,7 +14,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
     templateUrl: './display-screen.component.html',
     styleUrl: './display-screen.component.scss',
     imports: [MatCardModule, CommonModule, MatTableModule],
-    providers: [LlamadorService],
+    providers: [],
     animations: [
         trigger('llamadoAnimado', [
           transition(':enter', [

@@ -1,13 +1,22 @@
-import { Injectable } from '@angular/core';
-import { Socket } from 'ngx-socket-io';
+import { Subject } from 'rxjs';
 import { Llamable } from '../models/llamable.model';
 
+export class SocketServiceMock {
 
-@Injectable({ providedIn: 'root' })
-export class SocketService {
-    constructor(private socket: Socket) { }
+  private llamable$ = new Subject<Llamable>();
 
-    // eventos puesto
+  escucharLlamado() {
+    return this.llamable$.asObservable();
+  }
+
+  emitirLlamado = jasmine.createSpy('emitirLlamado');
+
+  pushLlamado(llamado: Llamable) {
+    this.llamable$.next(llamado);
+  }
+
+
+/*
     onPuestosUpdate() { return this.socket.fromEvent('puesto:update'); }
     onPuestoAdded() { return this.socket.fromEvent('puesto:added'); }
     onPuestoTaked() { return this.socket.fromEvent('puesto:taked'); }
@@ -25,6 +34,9 @@ export class SocketService {
     takePuesto(id: number) { this.socket.emit('puesto:take', { id }); }
     liberatePuesto(id: number) { this.socket.emit('puesto:liberate', { id }); }
     
+
     // emitters llamable
     llamarPersona(payload: Llamable) { this.socket.emit('llamable:call', payload ); }
+
+*/
 }
