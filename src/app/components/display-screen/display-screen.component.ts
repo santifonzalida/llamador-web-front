@@ -77,9 +77,12 @@ export class DisplayScreenComponent implements OnInit, OnDestroy{
         this.llamableActual = this.colaDeEspera.shift();
         
         if (this.llamableActual){
-            this.historialLlamables.push(this.llamableActual);
-            
-            this.historialLlamables.sort((a,b) => b.timestamp - a.timestamp);
+            // Solo agregar si el nombre completo no existe previamente y proviene del mismo puesto
+            const existe = this.historialLlamables.some(llamable => llamable.persona === this.llamableActual.persona && llamable.nombrePuesto === this.llamableActual.nombrePuesto);
+            if (!existe) {
+                this.historialLlamables.push(this.llamableActual);
+                this.historialLlamables.sort((a,b) => b.timestamp - a.timestamp);
+            }
             this.changeDetector.detectChanges();
         }
         
