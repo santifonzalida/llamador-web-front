@@ -11,6 +11,10 @@ const config: SocketIoConfig = {
   url: `${environment.apiUrl}`,
   options: {
     path: '/socket.io',
+    reconnection: true,
+    reconnectionAttempts: 5,
+    reconnectionDelay: 1000,
+    timeout: 20000,
   },
 };
 

@@ -8,9 +8,15 @@ import { Llamable } from '../models/llamable.model';
 describe('SocketService', () => {
   let service: SocketService;
 
-  // Creamos un mock manual con funciones de Vitest (vi.fn)
   const socketMock = {
-    fromEvent: vi.fn().mockReturnValue(of({})),
+    fromEvent: vi.fn((event: string) => {
+      switch (event) {
+        case 'connect':
+          return of({});
+        default:
+          return of();
+      }
+    }),
     emit: vi.fn()
   };
 
@@ -18,7 +24,6 @@ describe('SocketService', () => {
     TestBed.configureTestingModule({
       providers: [
         SocketService,
-        // mock en lugar del Socket real
         { provide: Socket, useValue: socketMock }
       ]
     });
@@ -30,23 +35,37 @@ describe('SocketService', () => {
     expect(service).toBeTruthy();
   });
 
+  it('debería exponer el estado de conexión y los eventos de error', () => {
+    service.onConnect();
+    service.onDisconnect();
+    service.onConnectError();
+    service.onConnectTimeout();
+    service.onReconnectAttempt();
+    service.onReconnectFailed();
+
+    expect(socketMock.fromEvent).toHaveBeenCalledWith('connect');
+    expect(socketMock.fromEvent).toHaveBeenCalledWith('disconnect');
+    expect(socketMock.fromEvent).toHaveBeenCalledWith('connect_error');
+    expect(socketMock.fromEvent).toHaveBeenCalledWith('connect_timeout');
+    expect(socketMock.fromEvent).toHaveBeenCalledWith('reconnect_attempt');
+    expect(socketMock.fromEvent).toHaveBeenCalledWith('reconnect_failed');
+  });
+
   it('debería llamar a emit con los parámetros correctos en addPuesto', () => {
     service.addPuesto();
-    // Verificamos que el mock fue llamado correctamente
     expect(socketMock.emit).toHaveBeenCalledWith('puesto:add');
   });
 
   it('debería emitir "puesto:delete" con el ID correcto', () => {
     const testId = 5;
     service.deletePuesto(testId);
-    
     expect(socketMock.emit).toHaveBeenCalledWith('puesto:delete', { id: testId });
   });
 
   it('debería escuchar el evento "person:called"', () => {
     service.onPersonCalled();
     expect(socketMock.fromEvent).toHaveBeenCalledWith('person:called');
-  });  
+  });
 
   it('deberia generar el evento "llamar persona"', () => {
     const payload: Llamable = {
@@ -60,6 +79,4 @@ describe('SocketService', () => {
 
     expect(socketMock.emit).toHaveBeenCalledWith('llamable:call', payload);
   });
-
-  
 });
