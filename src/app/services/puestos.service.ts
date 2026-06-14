@@ -11,9 +11,10 @@ export class PuestosService {
 
     constructor(private socket: SocketService) {
         this.socket.onPuestosUpdate().subscribe((p: Puesto[]) => this.puestoSubject.next(p));
-        this.socket.onPuestoAdded().subscribe((p: Puesto) => {});
+        this.socket.onPuestoAdded().subscribe((p: Puesto[]) => this.puestoSubject.next(p));
         this.socket.onPuestoTaked().subscribe((p: Puesto[]) => this.puestoSubject.next(p));
         this.socket.onPuestoLiberated().subscribe((p: Puesto[]) => this.puestoSubject.next(p));
+        this.socket.onPuestoDeleted().subscribe((p: Puesto[]) => this.puestoSubject.next(p));
     }
 
     addPuesto() { this.socket.addPuesto(); }

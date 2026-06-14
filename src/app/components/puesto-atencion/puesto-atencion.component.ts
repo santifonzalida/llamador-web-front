@@ -9,6 +9,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from "@angular/material/button";
+import { MatDividerModule } from '@angular/material/divider';
 import { MatDialog } from '@angular/material/dialog';
 import { PuestosService } from '../../services/puestos.service';
 import { LlamadorService } from "../../services/llamador.service";
@@ -20,7 +21,7 @@ import { DialogContentComponent } from "../common/confirmacion-dialog/confirmaci
   templateUrl: './puesto-atencion.component.html',
   styleUrl: './puesto-atencion.component.scss',
   providers: [PuestosService],
-  imports: [MatInputModule, MatButtonModule, CommonModule, MatFormFieldModule, MatIconModule, MatCardModule, FormsModule, ReactiveFormsModule, MatListModule]
+  imports: [MatInputModule, MatButtonModule, CommonModule, MatFormFieldModule, MatIconModule, MatCardModule, FormsModule, ReactiveFormsModule, MatListModule, MatDividerModule]
 })
 
 export class PuestoAtencionComponent implements OnInit, OnDestroy {
@@ -42,20 +43,20 @@ export class PuestoAtencionComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.puestoSubscription = this.activatedRoute.params.subscribe(params => {
+    this.puestoSubscription.add(this.activatedRoute.params.subscribe(params => {
       if (!params) {
         return;
       }
       this.idPuestoAtencion = Number(params['id']);
       this.puestosService.takePuesto(this.idPuestoAtencion);
-    });
+    }));
 
-    this.activatedRoute.queryParams.subscribe(p => {
+    this.puestoSubscription.add(this.activatedRoute.queryParams.subscribe(p => {
       if(!p) {
         return;
       }
       this.namePuestoAtencion = p['name'];
-    })
+    }));
   }
 
   ngOnDestroy() {

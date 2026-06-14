@@ -65,12 +65,12 @@ export class SocketService {
     }
 
     // eventos puesto
-    onPuestosUpdate(): Observable<any> { return this.socket.fromEvent('puesto:update'); }
-    onPuestoAdded(): Observable<any> { return this.socket.fromEvent('puesto:added'); }
-    onPuestoTaked(): Observable<any> { return this.socket.fromEvent('puesto:taked'); }
-    onPuestoDeleted(): Observable<any> { return this.socket.fromEvent('puesto:deleted'); }
-    onPuestoLiberated(): Observable<any> { return this.socket.fromEvent('puesto: liberated'); }
-    onPersonCalled(): Observable<any> { return this.socket.fromEvent('person:called'); }
+    onPuestosUpdate() { return this.socket.fromEvent('puesto:update'); }
+    onPuestoAdded() { return this.socket.fromEvent('puesto:added'); }
+    onPuestoTaked() { return this.socket.fromEvent('puesto:taked'); }
+    onPuestoDeleted() { return this.socket.fromEvent('puesto:deleted'); }
+    onPuestoLiberated() { return this.socket.fromEvent('puesto:liberated'); }
+    onPersonCalled() { return this.socket.fromEvent('person:called'); }
 
     // events llamable
     onLlamablesUpdate(): Observable<any> { return this.socket.fromEvent('llamable:update'); }
