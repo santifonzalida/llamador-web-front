@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { Socket } from 'ngx-socket-io';
 import { SocketService } from './socket.service';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { of } from 'rxjs'; // Necesario para simular eventos
+import { of } from 'rxjs';
 import { Llamable } from '../models/llamable.model';
 
 describe('SocketService', () => {
@@ -10,12 +10,8 @@ describe('SocketService', () => {
 
   const socketMock = {
     fromEvent: vi.fn((event: string) => {
-      switch (event) {
-        case 'connect':
-          return of({});
-        default:
-          return of();
-      }
+      if (event === 'connect') return of({});
+      return of();
     }),
     emit: vi.fn()
   };
@@ -35,20 +31,9 @@ describe('SocketService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('debería exponer el estado de conexión y los eventos de error', () => {
-    service.onConnect();
-    service.onDisconnect();
-    service.onConnectError();
-    service.onConnectTimeout();
-    service.onReconnectAttempt();
-    service.onReconnectFailed();
-
-    expect(socketMock.fromEvent).toHaveBeenCalledWith('connect');
-    expect(socketMock.fromEvent).toHaveBeenCalledWith('disconnect');
-    expect(socketMock.fromEvent).toHaveBeenCalledWith('connect_error');
-    expect(socketMock.fromEvent).toHaveBeenCalledWith('connect_timeout');
-    expect(socketMock.fromEvent).toHaveBeenCalledWith('reconnect_attempt');
-    expect(socketMock.fromEvent).toHaveBeenCalledWith('reconnect_failed');
+  it('debería escuchar el evento "puesto:update"', () => {
+    service.onPuestosUpdate();
+    expect(socketMock.fromEvent).toHaveBeenCalledWith('puesto:update');
   });
 
   it('debería llamar a emit con los parámetros correctos en addPuesto', () => {
@@ -62,21 +47,21 @@ describe('SocketService', () => {
     expect(socketMock.emit).toHaveBeenCalledWith('puesto:delete', { id: testId });
   });
 
-  it('debería escuchar el evento "person:called"', () => {
-    service.onPersonCalled();
-    expect(socketMock.fromEvent).toHaveBeenCalledWith('person:called');
-  });
-
-  it('deberia generar el evento "llamar persona"', () => {
+  it('debería emitir "llamable:call" con el payload correcto', () => {
     const payload: Llamable = {
       id: 1,
       fueLlamado: false,
       nombrePuesto: 'Caja 1',
       persona: 'Roberto Carlos',
       timestamp: Date.now()
-    }
+    };
     service.llamarPersona(payload);
-
     expect(socketMock.emit).toHaveBeenCalledWith('llamable:call', payload);
+  });
+
+  it('debería exponer connectionState$ iniciando en "connected" al recibir connect', () => {
+    let state: string | undefined;
+    service.connectionState$.subscribe(s => state = s);
+    expect(state).toBe('connected');
   });
 });

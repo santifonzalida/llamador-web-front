@@ -14,9 +14,27 @@
     padding: 16px;
 }
 
-.user-name {
-    font-weight: lighter;
-    font-size: medium;
+.connection-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: default;
+    transition: background 0.3s, color 0.3s;
+
+    &.connected    { background: #e6f4ea; color: #2e7d32; }
+    &.connecting   { background: #fff8e1; color: #f57f17; }
+    &.disconnected { background: #fce4ec; color: #c62828; }
+    &.error        { background: #fce4ec; color: #c62828; }
+
+    mat-icon { font-size: 18px; width: 18px; height: 18px; }
+}
+
+.connection-label {
+    font-size: 12px;
 }
 
 .rounded-sidenav {

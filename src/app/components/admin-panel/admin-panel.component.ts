@@ -19,7 +19,6 @@ import { Puesto } from "../../models/puesto.model";
         CommonModule,
         MatButtonModule,
     ],
-    providers: [PuestosService],
     styleUrl: './admin-panel.component.css'
 })
 
