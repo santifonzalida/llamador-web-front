@@ -37,7 +37,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.puestosSubscription = this.puestosService.puestos$.subscribe((items: any[]) => {
-            console.log(items);
             if (!items) {
                 return;
             }
