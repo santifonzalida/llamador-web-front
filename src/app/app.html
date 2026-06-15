@@ -1,7 +1,7 @@
 @if (!isDisplayScreen) {
 <mat-sidenav-container class="main-container">
     <mat-sidenav #sidenav mode="side" class="sidenav rounded-sidenav">
-        <mat-nav-list class="rounded-nav-list">  
+        <mat-nav-list class="rounded-nav-list">
             <mat-list-item class="mat-list-item" *ngFor="let action of actions" role="listitem">
                 <span matListItemTitle>{{action}}</span>
             </mat-list-item>
@@ -12,15 +12,23 @@
             <button mat-icon-button (click)="sidenav.toggle()">
                 <mat-icon>menu</mat-icon>
             </button>
-            <span class="">Llamador web</span>
+            <span>Llamador web</span>
             <span class="spacer"></span>
-            <span class="user-name">Nombre de usuario</span>
+            <span class="connection-badge" [class]="connectionState()" [matTooltip]="connectionLabel">
+                @switch (connectionState()) {
+                    @case ('connected')    { <mat-icon>wifi</mat-icon> }
+                    @case ('connecting')   { <mat-icon>wifi_find</mat-icon> }
+                    @case ('disconnected') { <mat-icon>wifi_off</mat-icon> }
+                    @case ('error')        { <mat-icon>error_outline</mat-icon> }
+                }
+                <span class="connection-label">{{ connectionLabel }}</span>
+            </span>
         </mat-toolbar>
         <div class="content">
-            <router-outlet />  
+            <router-outlet />
         </div>
     </mat-sidenav-content>
 </mat-sidenav-container>
 } @else {
-    <router-outlet />  
+    <router-outlet />
 }

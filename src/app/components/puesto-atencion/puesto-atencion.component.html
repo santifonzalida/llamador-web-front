@@ -1,48 +1,79 @@
-<div class="">
-  <div class="header-row">
-    <span>Puesto de atención: {{ namePuestoAtencion }}</span>
-  
-    <a class="volver-link" (click)="volverAPrincipal()">
-      Volver
-    </a>
+<!-- Header -->
+<div class="puesto-header">
+  <button mat-icon-button (click)="volverAPrincipal()" matTooltip="Volver al panel">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <div class="puesto-info">
+    <mat-icon class="puesto-icon">desktop_windows</mat-icon>
+    <p class="puesto-nombre">Puesto de atención: </p>
+    <span class="puesto-nombre">{{ namePuestoAtencion }}</span>
   </div>
-    <mat-divider></mat-divider>
 </div>
+<mat-divider></mat-divider>
 
 <div class="container">
-    <mat-card>
-      <mat-card-title [style.margin.px]="20">Próximo a llamar</mat-card-title>
-  
+
+  <!-- Card ingreso de nombre -->
+  <mat-card class="card-input">
+    <mat-card-header>
+      <mat-card-title>Próximo a llamar</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Nombre completo</mat-label>
-        <input matInput [(ngModel)]="nombreIngresado" />
+        <input
+          matInput
+          [(ngModel)]="nombreIngresado"
+          (keydown.enter)="agregarNombre()"
+          autocomplete="off"
+        />
       </mat-form-field>
-  
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="agregarNombre()"
-        [disabled]="!nombreIngresado"
-      >
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" style="width: 100%;"  (click)="agregarNombre()" [disabled]="!nombreIngresado">
+        <mat-icon>person_add</mat-icon>
         Agregar
       </button>
-    </mat-card>
-  
+    </mat-card-actions>
+  </mat-card>
+
+  <!-- Card persona a llamar -->
   @if (nombrePersona) {
-    <mat-card>
-      <mat-card-title class="acciones" style="margin: 10px;">Está por llamar a: <strong style="margin-left: 5px;">{{ nombrePersona }}</strong>
-          <button mat-icon-button color="primary" (click)="llamar()" style="margin-left: 20px;">
-            <mat-icon>phone</mat-icon>
-          </button>
-      
-          <button mat-icon-button color="primary" (click)="editar()">
+    <mat-card class="card-persona" [class.estado-llamado]="payload.fueLlamado">
+      <mat-card-header>
+        <div mat-card-avatar class="persona-avatar">
+          <mat-icon>person</mat-icon>
+        </div>
+        <mat-card-title>{{ nombrePersona }}</mat-card-title>
+        <mat-card-subtitle>
+          <span class="status-chip" [class.chip-llamado]="payload.fueLlamado">
+            <mat-icon class="chip-icon">{{ payload.fueLlamado ? 'check_circle' : 'schedule' }}</mat-icon>
+            {{ payload.fueLlamado ? 'Llamado' : 'Pendiente' }}
+          </span>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-actions class="actions-row">
+        <button
+          mat-raised-button
+          [color]="payload.fueLlamado ? 'accent' : 'primary'"
+          class="btn-llamar"
+          (click)="llamar()"
+        >
+          <mat-icon>{{ payload.fueLlamado ? 'phone_forwarded' : 'phone' }}</mat-icon>
+          {{ payload.fueLlamado ? 'Re-llamar' : 'Llamar' }}
+        </button>
+
+        <div class="secondary-actions">
+          <button mat-icon-button (click)="editar()" matTooltip="Editar nombre">
             <mat-icon>edit</mat-icon>
           </button>
-  
-          <button mat-icon-button color="warn" (click)="eliminar()">
+          <button mat-icon-button color="warn" (click)="eliminar()" matTooltip="Eliminar">
             <mat-icon>delete</mat-icon>
           </button>
-      </mat-card-title>
+        </div>
+      </mat-card-actions>
     </mat-card>
   }
-  </div>
+
+</div>

@@ -34,7 +34,7 @@ export class DisplayScreenComponent implements OnInit, OnDestroy{
     procesando: boolean = false;
     historialLlamables: Llamable[] = [];
     colaDeEspera: Llamable[] = [];
-    llamableActual: any;
+    llamableActual: Llamable | null = null;
     textoInicial: string = 'Iniciar';
     mostrarTablaLlamadoActual = false;
     
@@ -74,12 +74,15 @@ export class DisplayScreenComponent implements OnInit, OnDestroy{
         this.mostrarTablaLlamadoActual = true;
 
         this.procesando = true;
-        this.llamableActual = this.colaDeEspera.shift();
-        
+        this.llamableActual = this.colaDeEspera.shift() ?? null;
+
         if (this.llamableActual){
-            this.historialLlamables.push(this.llamableActual);
-            
-            this.historialLlamables.sort((a,b) => b.timestamp - a.timestamp);
+            const actual = this.llamableActual;
+            const existe = this.historialLlamables.some(llamable => llamable.persona === actual.persona && llamable.nombrePuesto === actual.nombrePuesto);
+            if (!existe) {
+                this.historialLlamables.push(this.llamableActual);
+                this.historialLlamables.sort((a,b) => b.timestamp - a.timestamp);
+            }
             this.changeDetector.detectChanges();
         }
         

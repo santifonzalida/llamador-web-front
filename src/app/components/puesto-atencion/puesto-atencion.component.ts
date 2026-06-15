@@ -4,11 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { MatListModule } from '@angular/material/list';
+import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from "@angular/material/button";
+import { MatDividerModule } from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { PuestosService } from '../../services/puestos.service';
 import { LlamadorService } from "../../services/llamador.service";
@@ -19,21 +21,24 @@ import { DialogContentComponent } from "../common/confirmacion-dialog/confirmaci
   selector: 'puesto-atencion',
   templateUrl: './puesto-atencion.component.html',
   styleUrl: './puesto-atencion.component.scss',
-  providers: [PuestosService],
-  imports: [MatInputModule, MatButtonModule, CommonModule, MatFormFieldModule, MatIconModule, MatCardModule, FormsModule, ReactiveFormsModule, MatListModule]
+  imports: [
+    CommonModule, FormsModule,
+    MatInputModule, MatButtonModule, MatFormFieldModule,
+    MatIconModule, MatCardModule, MatDividerModule, MatTooltipModule,
+  ]
 })
-
 export class PuestoAtencionComponent implements OnInit, OnDestroy {
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
+  private snackBar = inject(MatSnackBar);
 
   private puestoSubscription: Subscription = new Subscription;
 
   idPuestoAtencion: number = 0;
   nombreIngresado = '';
-  nombrePersona: string = '';
-  namePuestoAtencion: string = '';
-  payload: Llamable = {id: 0, nombrePuesto: '', persona: '', timestamp: Date.now(), fueLlamado: false};
+  nombrePersona = '';
+  namePuestoAtencion = '';
+  payload: Llamable = { id: 0, nombrePuesto: '', persona: '', timestamp: Date.now(), fueLlamado: false };
 
   constructor(
     private puestosService: PuestosService,
@@ -42,36 +47,30 @@ export class PuestoAtencionComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.puestoSubscription = this.activatedRoute.params.subscribe(params => {
-      if (!params) {
-        return;
-      }
+    this.puestoSubscription.add(this.activatedRoute.params.subscribe(params => {
+      if (!params) return;
       this.idPuestoAtencion = Number(params['id']);
       this.puestosService.takePuesto(this.idPuestoAtencion);
-    });
+    }));
 
-    this.activatedRoute.queryParams.subscribe(p => {
-      if(!p) {
-        return;
-      }
+    this.puestoSubscription.add(this.activatedRoute.queryParams.subscribe(p => {
+      if (!p) return;
       this.namePuestoAtencion = p['name'];
-    })
+    }));
   }
 
   ngOnDestroy() {
-    if (this.puestoSubscription) {
-      this.puestoSubscription.unsubscribe();
-    }
+    this.puestoSubscription.unsubscribe();
   }
 
   agregarNombre() {
-    this.payload = {id: 0, nombrePuesto: '', persona: '', timestamp: Date.now(), fueLlamado: false};
+    this.payload = { id: 0, nombrePuesto: '', persona: '', timestamp: Date.now(), fueLlamado: false };
     this.nombrePersona = this.nombreIngresado;
     this.nombreIngresado = '';
   }
 
   llamar() {
-    if(this.payload.fueLlamado) {
+    if (this.payload.fueLlamado) {
       this.abrirModalRellamado();
     } else {
       this.payload = {
@@ -79,9 +78,10 @@ export class PuestoAtencionComponent implements OnInit, OnDestroy {
         nombrePuesto: this.namePuestoAtencion,
         persona: this.nombrePersona,
         timestamp: Date.now(),
-        fueLlamado: true
-      }
-    this.llamadorService.llamarPersona(this.payload);
+        fueLlamado: true,
+      };
+      this.llamadorService.llamarPersona(this.payload);
+      this.mostrarFeedbackLlamado();
     }
   }
 
@@ -103,24 +103,31 @@ export class PuestoAtencionComponent implements OnInit, OnDestroy {
 
   abrirModalRellamado(): void {
     const dialogRef = this.dialog.open(DialogContentComponent, {
-        width: '300px',
-        data: { 
-          title: 'Atención', 
-          message: `Se llamará nuevamente a: ${this.payload.persona}`,
-          txtBtnSuccess: 'Aceptar',
-          txtBtnCancel: 'Cancelar'    
-        }
+      width: '300px',
+      data: {
+        title: 'Atención',
+        message: `Se llamará nuevamente a: ${this.payload.persona}`,
+        txtBtnSuccess: 'Aceptar',
+        txtBtnCancel: 'Cancelar',
+      }
     });
-      
+
     dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-            this.volverALlamar();
-        }
+      if (result) this.volverALlamar();
     });
   }
 
-  volverALlamar(){
+  volverALlamar() {
     this.llamadorService.llamarPersona(this.payload);
+    this.mostrarFeedbackLlamado();
   }
 
+  private mostrarFeedbackLlamado() {
+    this.snackBar.open(`Llamado enviado: ${this.payload.persona}`, '', {
+      duration: 4000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: 'snackbar-llamado',
+    });
+  }
 }
