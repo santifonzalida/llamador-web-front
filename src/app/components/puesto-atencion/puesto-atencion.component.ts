@@ -118,6 +118,7 @@ export class PuestoAtencionComponent implements OnInit, OnDestroy {
   }
 
   volverALlamar() {
+    this.payload = { ...this.payload, timestamp: Date.now() };
     this.llamadorService.llamarPersona(this.payload);
     this.mostrarFeedbackLlamado();
   }

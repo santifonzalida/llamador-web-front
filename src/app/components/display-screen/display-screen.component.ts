@@ -78,11 +78,13 @@ export class DisplayScreenComponent implements OnInit, OnDestroy{
 
         if (this.llamableActual){
             const actual = this.llamableActual;
-            const existe = this.historialLlamables.some(llamable => llamable.persona === actual.persona && llamable.nombrePuesto === actual.nombrePuesto);
-            if (!existe) {
+            const idx = this.historialLlamables.findIndex(l => l.persona === actual.persona && l.nombrePuesto === actual.nombrePuesto);
+            if (idx === -1) {
                 this.historialLlamables.push(this.llamableActual);
-                this.historialLlamables.sort((a,b) => b.timestamp - a.timestamp);
+            } else {
+                this.historialLlamables[idx] = this.llamableActual;
             }
+            this.historialLlamables.sort((a,b) => b.timestamp - a.timestamp);
             this.changeDetector.detectChanges();
         }
         
