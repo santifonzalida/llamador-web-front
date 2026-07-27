@@ -1,0 +1,53 @@
+<div class="system-page">
+
+  <div class="system-header">
+    <mat-icon class="system-icon">computer</mat-icon>
+    <h2 class="system-title">Sistema</h2>
+  </div>
+
+  @if (!shutdownInitiated) {
+    <mat-card class="shutdown-card">
+      <mat-card-header>
+        <mat-card-title>Apagado de dispositivo</mat-card-title>
+        <mat-card-subtitle>Raspberry Pi</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="shutdown-description">
+          Esta acción apaga completamente la Raspberry Pi.<br>
+          Deberás encenderla físicamente para volver a usar la app.
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="warn" class="btn-apagar" (click)="apagarSistema()">
+          <mat-icon>power_settings_new</mat-icon>
+          Apagar Raspberry Pi
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    @if (shutdownError) {
+      <mat-card class="error-card">
+        <mat-card-content>
+          <div class="error-row">
+            <mat-icon color="warn">error_outline</mat-icon>
+            <span>No se pudo conectar al servicio de apagado. Verificá que el backend esté corriendo y que el endpoint <code>/system/shutdown</code> exista.</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+
+  } @else {
+    <mat-card class="success-card">
+      <mat-card-content>
+        <div class="success-content">
+          <mat-icon class="success-icon">check_circle</mat-icon>
+          <div>
+            <p class="success-title">Apagado iniciado</p>
+            <p class="success-sub">La Raspberry Pi se está apagando. La conexión se perderá en breve.</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+
+</div>

@@ -1,5 +1,6 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
 import { provideSocketIo, SocketIoConfig } from 'ngx-socket-io';
 import { routes } from './app.routes';
 import { environment } from '../environment/environment';
@@ -22,6 +23,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
+    provideHttpClient(),
     provideSocketIo(config),
     provideAnimations(),
     MatDialogModule,
